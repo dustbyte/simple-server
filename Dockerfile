@@ -3,4 +3,6 @@ FROM golang
 WORKDIR /server
 COPY . /server
 
-CMD ["go", "run", "main.go"]
+RUN go build .
+
+CMD /server/simple-server
