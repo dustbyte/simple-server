@@ -3,18 +3,17 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
-	"io"
 
 	log "github.com/sirupsen/logrus"
 )
 
 func hello(w http.ResponseWriter, req *http.Request) {
+	log.Info("Received new request from ", req.UserAgent(), " on ", req.URL.Path)
+
 	hostname, err := os.Hostname()
-
-	log.Info("Received new request from ", req.UserAgent())
-
 	if err != nil {
 		log.Error("Couldn't get hostname")
 		w.WriteHeader(500)
@@ -48,5 +47,5 @@ func main() {
 	http.HandleFunc("/", hello)
 
 	log.Info("Running on port ", *port)
-	http.ListenAndServe(":" + *port, nil)
+	http.ListenAndServe(":"+*port, nil)
 }
